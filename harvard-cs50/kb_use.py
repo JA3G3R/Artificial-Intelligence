@@ -5,7 +5,7 @@ hagrid= Symbol("hagrid")
 dumbledore = Symbol("dumbledore")
 
 print()
-print("Check if when harry went to dumbledore,did it not rain?")
+print("Check if when harry went to dumbledore,did it surely rain?")
 knowledge =	And(
 	Implication(Not(rain),hagrid),
 	Or(hagrid,dumbledore),
@@ -13,11 +13,11 @@ knowledge =	And(
 	dumbledore
 )
 print(f"Knowledge Base is: {knowledge.formula()}")
-print(check_model(knowledge,Not(rain)))
+print(check_model(knowledge,rain))
 
 print("\n")
 
-print("Check if when harry went to hagrid, did it rain?")
+print("Check if when harry went to hagrid, did it surely rain?")
 knowledge =	And(
 	Implication(Not(rain),hagrid),
 	Or(hagrid,dumbledore),

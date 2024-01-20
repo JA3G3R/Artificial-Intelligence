@@ -5,6 +5,7 @@
 
 class Statement():
 
+	stmts = []
 	def __init__():
 		pass
 
@@ -16,6 +17,9 @@ class Statement():
 
 	def symbols(self):
 		return {}
+
+	def add(self,*stmts):
+		self.stmts += stmts
 
 class Symbol(Statement):
 
@@ -77,6 +81,10 @@ class And(Statement):
 			symbols.update(st.symbols())
 		return symbols
 
+	# def add(self,*stmts):
+	# 	self.stmts+=stmts
+
+
 class Or(Statement):
 
 	def __init__(self,*stmts):
@@ -123,11 +131,10 @@ def check_model(knowledge, query):
 		symbols=remaining.copy()
 		
 		if not symbols:
-			
 			if knowledge.evaluate(model):
-				return query.evaluate(model)
-			else:
-				return False
+				truth = query.evaluate(model)
+				return truth
+			return True
 		else:
 			sym = symbols.pop()
 			model_true = model.copy()
@@ -136,7 +143,8 @@ def check_model(knowledge, query):
 			model_false = model.copy()
 			model_false[sym] = False
 
-		return check_all(knowledge,query,symbols,model_true) or check_all(knowledge,query,symbols,model_false)
+		return check_all(knowledge,query,symbols,model_true) and check_all(knowledge,query,symbols,model_false)
+		# In the above return statement we added an and because, we need to make sure that there is no case where the knowledge base is true but the query condition is false. Since that would mean that it is not necessarily true that the knowledge base results in the query being true.
 
 	# join together all the symbols from knowledge and query
 	symbols = set.union(knowledge.symbols(),query.symbols())
